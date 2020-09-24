@@ -1,5 +1,7 @@
 package com.tsky.dsign.entity;
 
+import java.sql.Timestamp;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,6 +34,19 @@ public class UserEntity {
 	@ManyToOne
 	@JoinColumn(name="employee_id", referencedColumnName="employee_id")
 	private EmployeeEntity employee;
+	
+	@Column(name="created_by", length=15)
+	private String createdBy;
+	
+	@Column(name="created_on", updatable=false)
+	private Timestamp createdOn;
+	
+	@Column(name="updated_by", length=15)
+	private String updatedBy;
+	
+	@Column(name="updated_on")
+	private Timestamp updatedOn;
+
 	
 	public String getUserId() {
 		return userId;
@@ -71,6 +86,38 @@ public class UserEntity {
 
 	public void setIsActive(Boolean isActive) {
 		this.isActive = isActive;
+	}
+	
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Timestamp getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Timestamp createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
+	public Timestamp getUpdatedOn() {
+		return updatedOn;
+	}
+
+	public void setUpdatedOn(Timestamp updatedOn) {
+		this.updatedOn = updatedOn;
 	}
 
 	@Override

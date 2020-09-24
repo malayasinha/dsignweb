@@ -16,29 +16,28 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.tsky.dsign.entity.EmployeeEntity;
+import com.tsky.dsign.entity.UserEntity;
 import com.tsky.dsign.repository.ModuleRepository;
-import com.tsky.dsign.repository.EmployeeRepository;
+import com.tsky.dsign.repository.UserRepository;
 
 @Repository
-public class EmployeeRepositoryImpl implements EmployeeRepository  {
+public class UserRepositoryImpl implements UserRepository  {
 	static Logger logger = LogManager.getLogger(ModuleRepository.class);
 		
 	@Autowired
 	NamedParameterJdbcTemplate jdbcTemplate;
 	
 	@Override
-	public int saveEmployee(EmployeeEntity entity,String user) {
-		String sql = "INSERT INTO dsignweb.employees " +
-			"(employee_id, name, email, phone, department,is_active,created_by, created_on) "+
-			"VALUES(:employee_id, :name, :email, :phone, :department,:is_active,:created_by, :created_on) ";
+	public int saveUser(UserEntity entity,String user) {
+		String sql = "INSERT INTO dsignweb.users " +
+			"(user_id, is_active, password, name, employee_id, role_id,created_by, created_on) "+
+			"VALUES(:user_id, :is_active, :password, :name, :employee_id, :role_id,:created_by, :created_on) ";
 		MapSqlParameterSource parameters = new MapSqlParameterSource();
 		
-		parameters.addValue("employee_id", entity.getEmployeeId());
-		parameters.addValue("name", entity.getName());
-		parameters.addValue("email", entity.getName());
-		parameters.addValue("phone", entity.getName());
-		parameters.addValue("department", entity.getName());
+		parameters.addValue("user_id", entity.getUserId());
+		parameters.addValue("name", entity.getUserName());
+		parameters.addValue("password", entity.getPassword());
+		parameters.addValue("employee_id", entity.get());
 		parameters.addValue("is_active", true);
 		parameters.addValue("created_by", user);
 		parameters.addValue("created_on",new Timestamp(new Date().getTime()));
@@ -50,13 +49,13 @@ public class EmployeeRepositoryImpl implements EmployeeRepository  {
 
 
 	@Override
-	public int updateEmployee(EmployeeEntity entity, String user) {
-		String sql = "UPDATE dsignweb.employees " +
+	public int updateUser(UserEntity entity, String user) {
+		String sql = "UPDATE dsignweb.users " +
 				"SET department=:department, name=:name,email=:email, phone=:phone,updated_by=:updated_by, updated_on=current_timestamp,is_active=:is_active "+
-				"WHERE employee_id=:employee_id ";
+				"WHERE user_id=:user_id ";
 			MapSqlParameterSource parameters = new MapSqlParameterSource();
 			
-			parameters.addValue("employee_id", entity.getEmployeeId());
+			parameters.addValue("user_id", entity.getUserId());
 			parameters.addValue("name", entity.getName());
 			parameters.addValue("phone", entity.getPhone());
 			parameters.addValue("is_active", entity.getIsActive());
@@ -72,28 +71,28 @@ public class EmployeeRepositoryImpl implements EmployeeRepository  {
 
 
 	@Override
-	public EmployeeEntity fetchEmployeeById(String EmployeeId) {
-		String sql = "SELECT document_type, Employee_name, signatory1, signatory2, signatory3, signatory4, signatory5 FROM dsignweb.Employee "+
-				"where Employee_id = :EmployeeId ";
+	public UserEntity fetchUserById(String UserId) {
+		String sql = "SELECT document_type, User_name, signatory1, signatory2, signatory3, signatory4, signatory5 FROM dsignweb.User "+
+				"where User_id = :UserId ";
 		MapSqlParameterSource parameters = new MapSqlParameterSource();
-        parameters.addValue("EmployeeId", EmployeeId);
+        parameters.addValue("UserId", UserId);
         
-        return (EmployeeEntity) jdbcTemplate.queryForObject(
+        return (UserEntity) jdbcTemplate.queryForObject(
     			sql,
     			parameters,
-    			new BeanPropertyRowMapper<>(EmployeeEntity.class));
+    			new BeanPropertyRowMapper<>(UserEntity.class));
 		
 	}
 
 
 	@Override
-	public List<EmployeeEntity> fetchAllEmployee() {
-		String sql = "SELECT * FROM dsignweb.Employee";
+	public List<UserEntity> fetchAllUser() {
+		String sql = "SELECT * FROM dsignweb.User";
 
-	    List<EmployeeEntity> Employee = jdbcTemplate.query(
+	    List<UserEntity> User = jdbcTemplate.query(
 	            sql,
-	            new BeanPropertyRowMapper<>(EmployeeEntity.class));
-	    return Employee;
+	            new BeanPropertyRowMapper<>(UserEntity.class));
+	    return User;
 	}
 	
 }
