@@ -1,46 +1,38 @@
 package com.tsky.dsign.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Entity
-@Table(name="TBL_USERS")
+@Table(name="users")
 public class UserEntity {
 	
 	@Id
-	@Column(name="USER_ID")
-	@Size(max=25)
-	@NotNull
+	@Column(name="user_id", length=15, nullable=false)
 	private String userId;
 	
-	@Column(name="PASSWORD")
-	@Size(max=55)
-	@NotNull
+	@Column(name="password", length=55, nullable=false)
 	private String password;
 	
-	@Column(name="USER_NAME")
-	@Size(max=55)
+	@Column(name="name", length=35, nullable=false)
 	private String userName;
 	
-	@Column(name="USER_ROLE")
-	@Size(max=15)
-	private String userType;
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "role_id", referencedColumnName = "role_id")
+	private RoleEntity role;
 	
-	@Column(name="EMAIL")
-	@Size(max=35)
-	private String email;
-	
-	@Column(name="PHONE")
-	@Size(max=15)
-	private String phone;
-	
-	@Column(name="IS_ACTIVE")
+	@Column(name="is_active")
 	private Boolean isActive;
-
+	
+	@ManyToOne
+	@JoinColumn(name="employee_id", referencedColumnName="employee_id")
+	private EmployeeEntity employee;
+	
 	public String getUserId() {
 		return userId;
 	}
@@ -65,28 +57,12 @@ public class UserEntity {
 		this.userName = userName;
 	}
 
-	public String getUserType() {
-		return userType;
+	public RoleEntity getRole() {
+		return role;
 	}
 
-	public void setUserType(String userType) {
-		this.userType = userType;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setRole(RoleEntity role) {
+		this.role = role;
 	}
 
 	public Boolean getIsActive() {
@@ -99,9 +75,8 @@ public class UserEntity {
 
 	@Override
 	public String toString() {
-		return "UserBean [userId=" + userId + ", password=" + password + ", userName=" + userName + ", userType="
-				+ userType + ", email=" + email + ", phone=" + phone + ", isActive=" + isActive + "]";
+		return "UserEntity [userId=" + userId + ", password=" + password + ", userName=" + userName + ", role=" + role
+				+ ", isActive=" + isActive + ", employee=" + employee + "]";
 	}
-	
 	
 }

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	<Properties>
+        <Property name="LOG_PATTERN">[%d] [%p] %c{1.}:%L %m%n</Property>
+        <Property name="APP_LOG_ROOT">/home/malaya/logs</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+        <RollingFile name="AppError" fileName="${APP_LOG_ROOT}/AppError.log"
+                    filePattern="${APP_LOG_ROOT}/AppError-%d{MM-dd-yyyy}-%i.log.zip">
+			<PatternLayout>
+				<Pattern>${LOG_PATTERN}</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="50 MB"/>
+			</Policies>
+			<DefaultRolloverStrategy max="15"/>
+		</RollingFile>
+        <RollingFile name="AppInfo" fileName="${APP_LOG_ROOT}/AppInfo.log"
+                    filePattern="${APP_LOG_ROOT}/AppInfo-%d{MM-dd-yyyy}-%i.log.zip">
+			<PatternLayout>
+				<Pattern>${LOG_PATTERN}</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="50 MB"/>
+			</Policies>
+			<DefaultRolloverStrategy max="15"/>
+		</RollingFile>
+        <RollingFile name="PurgeDebug" fileName="${APP_LOG_ROOT}/AppDebug.log"
+                    filePattern="${APP_LOG_ROOT}/AppDebug-%d{MM-dd-yyyy}-%i.log.zip">
+			<PatternLayout>
+				<Pattern>${LOG_PATTERN}</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="50 MB"/>
+			</Policies>
+			<DefaultRolloverStrategy max="15"/>
+		</RollingFile>
+		
+    </Appenders>
+    
+    
+    <Loggers>
+    	<Root level="error">
+            <AppenderRef ref="Console" level="debug"/>
+        </Root>
+        
+    	<Logger name="org.hibernate.SQL" level="debug" additivity="false">
+		  <AppenderRef ref="Console" />
+		</Logger>
+        <Logger name="com.tsky.dsign" level="info" additivity="true">
+            <AppenderRef ref="AppInfo"/>
+        </Logger>
+        <Logger name="com.tsky.dsign" level="debug" additivity="true">
+            <AppenderRef ref="AppDebug"/>
+        </Logger>
+        <Logger name="com.tsky.dsign" level="error" additivity="true">
+            <AppenderRef ref="AppError"/>
+        </Logger>
+        
+    </Loggers>
+</Configuration>

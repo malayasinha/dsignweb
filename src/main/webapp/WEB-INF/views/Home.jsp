@@ -86,6 +86,14 @@
 		                            <li><a class="dropdown-item" href="#!manageappmod2">Manage App</a></li>
 		                        </ul>
 		                    </li>
+		                    <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Contract Signing</a>
+		                        <ul class="dropdown-menu">
+		                            <li><a class="dropdown-item" href="#!signatories">Signatories</a></li>
+		                            <li><a class="dropdown-item" href="#!profile">Profile</a></li>
+		                            <li><a class="dropdown-item" href="#!uploadfile">Upload File</a></li>
+		                            <li><a class="dropdown-item" href="#!approve">Approve Contract</a></li>
+		                        </ul>
+		                    </li>
 		                </ul>
 		            </li>
 		            

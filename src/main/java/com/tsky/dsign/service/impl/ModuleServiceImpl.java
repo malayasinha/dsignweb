@@ -15,10 +15,10 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import com.tsky.dsign.dao.ModuleDao;
-import com.tsky.dsign.dto.ResponseObject;
-import com.tsky.dsign.entity.MailHistoryBean;
-import com.tsky.dsign.entity.SignHistoryBean;
+import com.tsky.dsign.bean.MailHistoryBean;
+import com.tsky.dsign.bean.ResponseBean;
+import com.tsky.dsign.bean.SignHistoryBean;
+import com.tsky.dsign.repository.ModuleRepository;
 import com.tsky.dsign.service.ModuleService;
 import com.tsky.dsign.utility.CommonUtil;
 import com.tsky.dsign.utility.ConnectToServer;
@@ -32,11 +32,11 @@ public class ModuleServiceImpl implements ModuleService {
 	Environment environment;
 	
 	@Autowired
-	ModuleDao tariffDao;
+	ModuleRepository tariffDao;
 	
 	@Override
-	public ResponseObject<Map<String,String>> getSignedHistoryList(String module, String fileName) {
-		ResponseObject<Map<String,String>> response = new ResponseObject<>(); 
+	public ResponseBean<Map<String,String>> getSignedHistoryList(String module, String fileName) {
+		ResponseBean<Map<String,String>> response = new ResponseBean<>(); 
 		logger.info("Service called for "+module);
 		List<SignHistoryBean> signList = new ArrayList<SignHistoryBean>();
 		List<MailHistoryBean> mailList = new ArrayList<MailHistoryBean>();
@@ -45,7 +45,7 @@ public class ModuleServiceImpl implements ModuleService {
 		String signFile,mailFile = "";
 		Map<String,String> retMap = new HashMap<>();
 		if(tokens.countTokens()>15) {
-			response = new ResponseObject<>(environment.getRequiredProperty("message.data.tokenlimit"),null,true);
+			response = new ResponseBean<>(environment.getRequiredProperty("message.data.tokenlimit"),null,true);
 		} else {
 			while(tokens.hasMoreTokens()) {
 				token = tokens.nextToken().replaceAll("\\s", "");;
@@ -61,9 +61,9 @@ public class ModuleServiceImpl implements ModuleService {
 					mailFile = CommonUtil.writeUsingBufferedWriter2(mailList);
 					retMap.put("MAIL", mailFile);
 				}
-				response = new ResponseObject<>(environment.getRequiredProperty("message.data.exist"),retMap,false);
+				response = new ResponseBean<>(environment.getRequiredProperty("message.data.exist"),retMap,false);
 			} else {
-				response = new ResponseObject<>(environment.getRequiredProperty("message.data.no"),retMap,true);
+				response = new ResponseBean<>(environment.getRequiredProperty("message.data.no"),retMap,true);
 			}
 		}
 		
@@ -71,8 +71,8 @@ public class ModuleServiceImpl implements ModuleService {
 	}
 	
 	@Override
-	public ResponseObject<Map<String,String>> getSignedHistoryList(String module, String fromDate, String toDate) {
-		ResponseObject<Map<String,String>> response = new ResponseObject<>();
+	public ResponseBean<Map<String,String>> getSignedHistoryList(String module, String fromDate, String toDate) {
+		ResponseBean<Map<String,String>> response = new ResponseBean<>();
 		logger.info("service for report:"+module);
 		String pattern = "yyyy-MM-dd";
 		Calendar fromCal = CommonUtil.convertToCalendar(fromDate, pattern);
@@ -99,9 +99,9 @@ public class ModuleServiceImpl implements ModuleService {
 				mailFile = CommonUtil.writeUsingBufferedWriter2(mailList);
 				retMap.put("MAIL", mailFile);
 			}
-			response = new ResponseObject<>(environment.getRequiredProperty("message.data.exist"),retMap,false);
+			response = new ResponseBean<>(environment.getRequiredProperty("message.data.exist"),retMap,false);
 		} else {
-			response = new ResponseObject<>(environment.getRequiredProperty("message.data.no"),retMap,true);
+			response = new ResponseBean<>(environment.getRequiredProperty("message.data.no"),retMap,true);
 		}
 		return response;
 	}

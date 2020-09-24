@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.tsky.dsign.dto.ResponseObject;
+import com.tsky.dsign.bean.ResponseBean;
 import com.tsky.dsign.service.ModuleService;
 import com.tsky.dsign.utility.Constants;
 import com.tsky.dsign.utility.ResourceReader;
@@ -45,8 +45,8 @@ public class Module1Controller {
     private final String module = "dsigndb"; 
     
 	@PostMapping("/search1")
-	public ResponseEntity<ResponseObject<Map<String,String>>> searchData(@RequestParam("fileName") String fileName) {
-		ResponseObject<Map<String,String>> resp = service.getSignedHistoryList(module, fileName);  
+	public ResponseEntity<ResponseBean<Map<String,String>>> searchData(@RequestParam("fileName") String fileName) {
+		ResponseBean<Map<String,String>> resp = service.getSignedHistoryList(module, fileName);  
 		return new ResponseEntity<>(resp,HttpStatus.OK);
 	}
     
@@ -58,10 +58,10 @@ public class Module1Controller {
     
     
     @PostMapping("/report1") //2018-11-15T18:30:00.000Z  yyyy-MM-dd'T'h:mm:ss.SSSZ
-	public ResponseEntity<ResponseObject<Map<String,String>>> generateReport(@RequestParam("fromdate") String fromDate,
+	public ResponseEntity<ResponseBean<Map<String,String>>> generateReport(@RequestParam("fromdate") String fromDate,
 			@RequestParam("todate") String toDate) {
 		logger.info("report this is a from Date: "+fromDate+"  to Date :"+toDate);
-		ResponseObject<Map<String,String>> resp = service.getSignedHistoryList(module, fromDate, toDate);  
+		ResponseBean<Map<String,String>> resp = service.getSignedHistoryList(module, fromDate, toDate);  
 		return new ResponseEntity<>(resp,HttpStatus.OK);
 	
     }
@@ -94,7 +94,7 @@ public class Module1Controller {
     
     }
     @PostMapping("/manage1") //2018-11-15T18:30:00.000Z  yyyy-MM-dd'T'h:mm:ss.SSSZ
-	public ResponseEntity<ResponseObject<String>> manageApp() {
+	public ResponseEntity<ResponseBean<String>> manageApp() {
     	String command=ResourceReader.readConfigProps("server.profile1.command");
 		service.executeCommand(command);
     	

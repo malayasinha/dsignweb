@@ -16,8 +16,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import com.tsky.dsign.entity.MailHistoryBean;
-import com.tsky.dsign.entity.SignHistoryBean;
+import com.tsky.dsign.bean.MailHistoryBean;
+import com.tsky.dsign.bean.SignHistoryBean;
 
 public class CommonUtil {
 	public static String HOUR = "HOUR";
