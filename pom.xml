@@ -20,7 +20,7 @@
 		<servlets.version>3.1.0</servlets.version>
 		<jsp.version>2.3.1</jsp.version>
 		<mysql.version>8.0.11</mysql.version>
-		<jaction.xml.version>2.9.9</jaction.xml.version>
+		<jaction.xml.version>2.13.4.1</jaction.xml.version>
 	</properties>
 	<dependencies>
 		<!-- Spring MVC Dependency -->
